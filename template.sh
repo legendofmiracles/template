@@ -1,5 +1,8 @@
 #!/bin/env bash
-set -x
+if [[ ! -z ${TEMPLATE_DEBUG}  ]];
+then
+  set -x
+fi
 
 function getNewTemplate() {
   echo $1 >> $cache/.git/info/sparse-checkout
