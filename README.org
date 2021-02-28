@@ -1,13 +1,13 @@
 * template
 A simple template downloader
 ** How to use
-#+begin_bash
+#+BEGIN_SRC
 template.sh name template
-#+end_bash
+#+END_SRC
 All valid templates are in templates/.
 
 So e.g.
-#+begin_bash
+#+BEGIN_SRC
 template.sh terminal c
-#+end_bash
+#+END_SRC
 will create a new directory called terminal, with a basic C file.
