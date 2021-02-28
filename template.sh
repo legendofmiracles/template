@@ -32,3 +32,7 @@ if [[ ! -d $cache ]]; then
 fi
 
 checkTemplate "$template" || getNewTemplate "$template"
+
+mkdir "$name"
+cp "$cache/templates/$template" "$name/"
+git init test
