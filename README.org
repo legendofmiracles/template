@@ -1,4 +1,13 @@
-#+TITLE: Readme
-
 * template
 A simple template downloader
+** How to use
+#+begin_bash
+template.sh name template
+#+end_bash
+All valid templates are in templates/.
+
+So e.g.
+#+begin_bash
+template.sh terminal c
+#+end_bash
+will create a new directory called terminal, with a basic C file.
