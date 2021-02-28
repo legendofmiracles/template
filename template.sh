@@ -17,7 +17,7 @@ function checkTemplate() {
 function createCache() {
   mkdir $cache
   git init $cache
-  git config core.sparseCheckout true
+  git -C $cache config core.sparseCheckout true
   git -C $cache remote add origin $1
 }
 
