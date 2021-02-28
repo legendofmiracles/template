@@ -6,7 +6,7 @@ fi
 
 function getNewTemplate() {
   grep -xq "templates/$1" $cache/.git/info/sparse-checkout || echo templates/$1 >> $cache/.git/info/sparse-checkout
-  git -C $cache pull origin master
+  git -C $cache pull --depth=1 origin master
 }
 
 function checkTemplate() {

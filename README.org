@@ -1,8 +1,8 @@
 * template
 A simple template downloader
-** How to use
+** usage
 #+BEGIN_SRC
-template.sh name template
+template.sh [-h/--help] [-v/--version] <name> <template>
 #+END_SRC
 All valid templates are in templates/.
 
