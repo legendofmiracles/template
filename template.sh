@@ -5,7 +5,7 @@ then
 fi
 
 function getNewTemplate() {
-  grep -xq "templates/$1" $cache/.git/info/sparse-checkout || echo templates/$1 >> $cache/.git/info/sparse-checkout
+  grep -xq "templates/$1" $cache/.git/info/sparse-checkout 2> /dev/null || echo templates/$1 >> $cache/.git/info/sparse-checkout
   git -C $cache pull --depth=1 origin master
 }
 
@@ -32,7 +32,7 @@ function updateTemplates() {
   git -C $cache pull origin master
 }
 
-repo=https://github.com/saucecode/bp
+repo=https://github.com/legendofmiracles/template
 cache=~/.cache/template
 name=unset
 template=unset
@@ -69,7 +69,7 @@ fi
 checkTemplate "$template" || getNewTemplate "$template" && updateTemplates
 
 mkdir "$name"
-cp "$cache/templates/$template" "$name/"
+cp -r "$cache/templates/$template/." "$name/"
 git init "$name"
 git -C "$name" add -A
 git -C "$name" commit -m "First commit"
