@@ -26,6 +26,7 @@ function createCache() {
 
 function usage() {
   echo "./$(basename $0): [-h/--help] [-v/--version] [-n/--name] <template> [directory]" 1>&2
+  echo "If no directory specified then it's the current dir.\nAnd each template has a default name set, if you don't specify one."
 }
 
 function updateTemplates() {
@@ -61,9 +62,9 @@ do
     --) shift; break;;
   esac
 done
-echo $name
+
 # checks that we have the required args
-if [[ ${#} != "1" ]]; then
+if [[ ! $# -ge 1 ]]; then
   usage
   exit
 fi
@@ -75,16 +76,20 @@ if [[ ! $directory  ]]; then
   directory=.
 fi
 
-
 if [[ ! -d $cache ]]; then
   createCache "$repo" 
 fi
 
 checkTemplate "$template" || getNewTemplate "$template" && updateTemplates
 
-mkdir "$directory"
+mkdir "$directory" 2> /dev/null
 cp -r "$cache/templates/$template/." "$directory/"
-
+if [[ name == unset ]]; then
+  name=$(yq -r .[0].default[].NAME template.yml)
+  if [[ $? -eq 0 && ! -z $name ]]; then
+    find . -type f -not -path '*/\.*' -exec sed -i 's/{{NAME}}/'$name'/g' {} +
+  fi
+fi
 git init "$directory"
 git -C "$directory" add -A
 git -C "$directory" commit -m "First commit"

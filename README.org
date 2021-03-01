@@ -2,7 +2,7 @@
 A simple template downloader
 ** usage
 #+BEGIN_SRC
-template.sh [-h/--help] [-v/--version] <name> <template>
+template.sh [-h/--help] [-v/--version] [-n/--name] <template> [directory, if none specified it's the current dir]
 #+END_SRC
 All valid templates are in templates/.
 
