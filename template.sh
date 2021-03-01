@@ -84,12 +84,14 @@ checkTemplate "$template" || getNewTemplate "$template" && updateTemplates
 
 mkdir "$directory" 2> /dev/null
 cp -r "$cache/templates/$template/." "$directory/"
-if [[ name == unset ]]; then
-  name=$(yq -r .[0].default[].NAME template.yml)
+if [[ $name == unset ]]; then
+  name=$(yq -r .[0].default[].NAME $directory/template.yml)
   if [[ $? -eq 0 && ! -z $name ]]; then
-    find . -type f -not -path '*/\.*' -exec sed -i 's/{{NAME}}/'$name'/g' {} +
+    echo what 
+    find $directory -type f -not -path '*/\.*' -exec sed -i 's/{{NAME}}/'$name'/g' $directory/{} +
   fi
 fi
 git init "$directory"
 git -C "$directory" add -A
 git -C "$directory" commit -m "First commit"
+
