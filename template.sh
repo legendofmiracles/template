@@ -25,27 +25,30 @@ function createCache() {
 } 
 
 function usage() {
-  echo "./$(basename $0): [-h/--help] [-v/--version] <name> <template>" 1>&2
+  echo "./$(basename $0): [-h/--help] [-v/--version] [-n/--name] <template> [directory]" 1>&2
 }
 
 function updateTemplates() {
-  git -C $cache pull origin master
+  git -C $cache pull --depth=1 origin master
 }
 
 repo=https://github.com/legendofmiracles/template
 cache=~/.cache/template
 name=unset
-template=unset
 
+# checks that we have any args at all
 if [[ ${#} -eq 0 ]]; then
    usage
    exit 1
 fi
 
-opts=$(getopt -a -n template -o hv -l help,version -- "$@")
+opts=$(getopt -a -n template -o hvn: -l help,version,name: -- "$@")
+
+# checks that parsing went ok
 VALID_ARGUMENTS=$?
 if [ "$VALID_ARGUMENTS" != "0" ]; then
   usage
+  exit
 fi
 
 eval set -- "$opts"
@@ -54,12 +57,23 @@ do
   case "$1" in 
     -h | --help) usage && exit 0; shift;;
     -v | --version) echo "template v1.0" && exit 0; shift;;
+    -n | --name) name=$2; shift 2;;
     --) shift; break;;
   esac
 done
+echo $name
+# checks that we have the required args
+if [[ ${#} != "1" ]]; then
+  usage
+  exit
+fi
 
-name=${@:1:1}
-template=${@:2:1}
+#name=${@:1:1}
+template=${@:1:1}
+directory=${@:2:1}
+if [[ ! $directory  ]]; then
+  directory=.
+fi
 
 
 if [[ ! -d $cache ]]; then
@@ -68,8 +82,9 @@ fi
 
 checkTemplate "$template" || getNewTemplate "$template" && updateTemplates
 
-mkdir "$name"
-cp -r "$cache/templates/$template/." "$name/"
-git init "$name"
-git -C "$name" add -A
-git -C "$name" commit -m "First commit"
+mkdir "$directory"
+cp -r "$cache/templates/$template/." "$directory/"
+
+git init "$directory"
+git -C "$directory" add -A
+git -C "$directory" commit -m "First commit"

@@ -1,0 +1,4 @@
+defaultVariables:
+  - NAME: "rust project"
+  - WHOAMI: "your name"
+  - GIT_EMAIL: "git email"
